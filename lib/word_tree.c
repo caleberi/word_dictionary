@@ -93,25 +93,7 @@ word_tree* create_word_tree( const char root_word[]){
 void save(word_tree* t,const char word[]){
         clock_t start,finish;
         start = clock();
-        word_node* tn = (word_node*)malloc(sizeof(word_
-}
-
-FILE* file_Reader_Writer(FILE *ip,char mode)
-{
-        if(fileCheck(ip,mode)){
-                exit(); // exist this function if true
-        }
-
-        FILE *fp;
-}
-
-FILE* file_Reader_Writer(FILE *ip,char mode)
-{
-        if(fileCheck(ip,mode)){
-                exit(); // exist this function if true
-        }
-
-        FILE *fp;node));
+        word_node* tn = (word_node*)malloc(sizeof(word_node));
         strcpy(tn->word,word);
         tn->left = tn->right = NULL;
         if(empty(t)){
@@ -166,6 +148,8 @@ FILE* file_Reader_Writer(FILE *ip,char mode)
         finish = clock();
         printf(" \t saving finished :%.2f \n",(double)((finish-start)/CLOCKS_PER_SEC));
 }
+
+
 
 
 
