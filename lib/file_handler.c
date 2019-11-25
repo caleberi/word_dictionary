@@ -141,22 +141,34 @@ char *file_Reader_Writer(const char *filename, const char *mode)
 //         return *words;
 // }
 
-char* *split(char *string){
+char **split(char *string)
+{
         static char *words[MAX_LENGTH / 2];
         static int index = 0;
-        const char *delimiter=" ";
-        char *ptr = strtok(string,delimiter);
-        while (ptr!=NULL)
+        // resetting words 
+        for (int i = 0; i < sizeof(words) / sizeof(words[0]); i++)
         {
-                words[index]= ptr;
-                ptr=strtok(NULL,delimiter);
+                words[i] = NULL;
+        }
+        const char *delimiter = " ";
+        char *ptr = strtok(string, delimiter);
+        while (ptr != NULL)
+        {
+                words[index] = ptr;
+                ptr = strtok(NULL, delimiter);
                 ++index;
         }
-        index=0;
+        index = 0;
         return words;
 }
 
 int main()
 {
-        
+        char   line[]   = "The nature of the beast of static storage in functions. You could do something like trigger alternate behavior based on a known input value (i.e. the caller sending a NULL as string resets index and wipes the array). But that's a hideous hack that covers the real problem; this is a terrible place to use a static array in the first place. ";
+        char **splitted = split(line);
+        int i =0;
+        while(splitted[i]!=NULL){
+                printf("%s\n", splitted[i]);
+                ++i;
+        }
 }
