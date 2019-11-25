@@ -2,25 +2,29 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+
 #include "word_tree.h"
 
+#define MAX_LENGTH 10000
 
-char* word_printer(char*,...);
-void fileCopy(FILE *,FILE *);
-bool fileCheck(FILE *,char);
+#define MAX_WORD 42
+#define LINE_LENGTH_MAX 5000
 
+char *word_printer(char *, ...);
+void fileCopy(FILE *, FILE *);
+bool fileCheck(const char *filename, const char *mode);
 
-char* word_printer(char* fmt,...)
+char *word_printer(char *fmt, ...)
 {
         va_list ap;
-        char *p,*sval;
+        char *p, *sval;
         int ival;
         double dval;
 
-        va_start(ap,fmt);
-        for ( p = fmt; *p; p++)
+        va_start(ap, fmt);
+        for (p = fmt; *p; p++)
         {
-                if (*p=='%')
+                if (*p == '%')
                 {
                         putchar(*p);
                         continue;
@@ -28,52 +32,131 @@ char* word_printer(char* fmt,...)
                 switch (*++p)
                 {
                 case 'i':
-                        ival = va_arg(ap,int);
-                        printf("%d",ival);
+                        ival = va_arg(ap, int);
+                        printf("%d", ival);
                         break;
                 case 's':
-                        for (sval = va_arg(ap,char*);*sval; sval++)
+                        for (sval = va_arg(ap, char *); *sval; sval++)
                                 putchar(*p);
                         break;
                 default:
                         putchar(*p);
                         break;
                 }
-                
         }
         va_end(ap);
-        
+
         return p;
 }
 
-void fileCopy(FILE *input,FILE *output)
+void fileCopy(FILE *input, FILE *output)
 {
         int c;
-        while ((c=getc(input)) != EOF)
+        while ((c = getc(input)) != EOF)
         {
-                putc(c,output);
+                putc(c, output);
         }
-
 }
 
-
-bool fileCheck(FILE *ip,char mode)
+bool fileCheck(const char *filename, const char *mode)
 {
-        if(fopen(ip,mode)){
+        FILE *fp = fopen(filename, mode);
+        if (fp)
+        {
+                free(fp);
                 return true;
         }
+        free(fp);
         return false;
 }
 
-FILE* file_Reader_Writer(FILE *ip,char mode)
+char *file_Reader_Writer(const char *filename, const char *mode)
 {
-        if(fileCheck(ip,mode)){
-                exit(); // exist this function if true
+        if (!fileCheck(filename, mode))
+        {
+                exit(1); // exist this function if true
         }
 
         FILE *fp;
 
-        fp =  fopen(ip,mode);
+        fp = fopen(filename, mode);
 
-        return ;
+        char *wordBuffer[MAX_LENGTH];
+        int i;
+        char strbuf[LINE_LENGTH_MAX];
+        char *line;
+        int lineSize = (sizeof(strbuf) / sizeof(char));
+        while ((line = fgets(strbuf, lineSize, fp)))
+        {
+        }
+
+        return NULL;
+}
+
+// char *split(const char *string)
+// {
+//         char *words[MAX_LENGTH / 2];
+
+//         char *word = (char *)calloc(MAX_WORD, sizeof(char));
+//         memset(word, ' ', sizeof(char));
+//         static int index = 0;
+//         int line_index = 0;
+//         int word_index =0;
+
+//         while (string[line_index] != '\n')
+//         {
+//                 const char c = string[line_index];
+//                 if (c == ' ')
+//                 {
+//                         word[word_index+ 1] = '\0';
+//                         memcpy(words+index,&word,sizeof(word));
+//                         index+=1;
+//                         if(word!=NULL)
+//                         {
+//                                 free(word);
+//                                 char *word = (char *)calloc(MAX_WORD,sizeof(char));
+//                                 memset(word, ' ', sizeof(char));
+//                         }
+//                         ++line_index;
+//                         word_index =0;
+//                         continue;
+//                 }
+//                 if (c == '\t')
+//                         continue;
+//                 if (c == '.')
+//                         continue;
+//                 if (c == ',')
+//                         continue;
+
+//                 word[word_index] = c;
+//                 ++word_index;
+//                 ++line_index;
+//         }
+
+//         index =0;
+//         if(word!=NULL)
+//         {
+//                 free(word);
+//         }
+//         return *words;
+// }
+
+char* *split(char *string){
+        static char *words[MAX_LENGTH / 2];
+        static int index = 0;
+        const char *delimiter=" ";
+        char *ptr = strtok(string,delimiter);
+        while (ptr!=NULL)
+        {
+                words[index]= ptr;
+                ptr=strtok(NULL,delimiter);
+                ++index;
+        }
+        index=0;
+        return words;
+}
+
+int main()
+{
+        
 }

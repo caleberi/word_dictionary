@@ -89,7 +89,10 @@ word_tree* create_word_tree( const char root_word[]){
         return t;
 }
 
-
+/*
+        * @params takes in a pointer to a tree and takes a word 
+        * 
+*/
 void save(word_tree* t,const char word[]){
         clock_t start,finish;
         start = clock();
